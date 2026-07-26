@@ -7,16 +7,25 @@ const terminal = readLine.createInterface({
     prompt:"pokedex> ",
 });
 
-console.log("starting pokedex......");
+console.log("\n========== Welcome to the Pokédex ==========");
+console.log('Type "help" to see the available commands.');
 
 terminal.prompt();
 terminal.on("line", async(input) =>{
-    const commands= input.split(" ");
-    await commandManager(commands, terminal);
-    terminal.prompt();
+    const trimmedInput = input.trim();
+
+    if (!trimmedInput) {
+        terminal.prompt();
+        return;
+    }
+
+    const shouldPrompt = await commandManager(trimmedInput.split(/\s+/), terminal);
+    if (shouldPrompt) {
+        terminal.prompt();
+    }
 })
 
 terminal.on("close",()=>{
-    console.log("thank you for using pokedex!!!!");
+    console.log("Thank you for using the Pokédex!");
     process.exit();
 });

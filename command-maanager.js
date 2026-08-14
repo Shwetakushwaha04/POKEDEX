@@ -1,5 +1,6 @@
 const pokemonCommandManager  = require("./pokemon");
 const locationCommandManager = require("./location");
+const evolutionCommandManager = require("./evolution");
 
 async function commandManager(commands, terminal) {
   const [type, ...arg] = commands;
@@ -15,10 +16,16 @@ async function commandManager(commands, terminal) {
       return false;
     }
 
-    case "location":{
+    case "location": {
       await locationCommandManager(arg);
       break;
     }
+
+    case "evolution": {
+      await evolutionCommandManager(arg);
+      break;
+    }
+
     case "help": {
       console.log("\nAvailable commands:");
       console.log("  pokemon list          Show the first page of Pokémon");
@@ -26,7 +33,8 @@ async function commandManager(commands, terminal) {
       console.log("  pokemon -p            Show the previous page");
       console.log("  pokemon -s <name|id>  Look up a Pokémon");
       console.log("  location list         Show the locations");
-      console.log("  location -s <name|id  look up a location");
+      console.log("  location -s <name|id>  look up a location");
+      console.log("  evolution <name>      Show Pokémon evolution chain");
       console.log("  pokemon --help        Show Pokémon command help");
       console.log("  location --help       Show location command help");
       console.log("  exit                  Close the Pokédex\n");
@@ -34,7 +42,9 @@ async function commandManager(commands, terminal) {
     }
 
     default:
-      console.log(`Command "${type}" was not found. Type "help" to see available commands.`);
+      console.log(
+        `Command "${type}" was not found. Type "help" to see available commands.`,
+      );
   }
 
   return true;

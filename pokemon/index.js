@@ -4,32 +4,40 @@ const callingParams = {
   url: "https://pokeapi.co/api/v2/pokemon",
 };
 
-const pokemonCommandManager = async (arg) => {
+const pokemonCommandManager = async (args) => {
   try {
-    const [subCommand = "list", ...params] = arg;
+    const [subCommand = "list", ...params] = args;
+
     switch (subCommand) {
+      case "list": {
+        const { next, previous } = await getPokemonList(callingParams.url);
+
+        callingParams.next = next;
+        callingParams.previous = previous;
+        break;
+      }
+
       case "-n": {
         const { next, previous } = await getPokemonList(callingParams.next);
+
         callingParams.next = next;
         callingParams.previous = previous;
         break;
       }
+
       case "-p": {
         const { next, previous } = await getPokemonList(callingParams.previous);
+
         callingParams.next = next;
         callingParams.previous = previous;
         break;
       }
+
       case "-s": {
         await getPokemon(params[0]);
         break;
       }
-      case "list": {
-        const { next, previous } = await getPokemonList(callingParams.url);
-        callingParams.next = next;
-        callingParams.previous = previous;
-        break;
-      }
+
       case "--help": {
         console.log("\nPokémon commands:");
         console.log("  pokemon list          Show the first page of Pokémon");
@@ -40,7 +48,9 @@ const pokemonCommandManager = async (arg) => {
       }
 
       default: {
-        console.log(`Invalid Pokémon command "${subCommand}". Try "pokemon --help".`);
+        console.log(
+          `Invalid Pokémon command "${subCommand}". Try "pokemon --help".`,
+        );
       }
     }
   } catch (error) {

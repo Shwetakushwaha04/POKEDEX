@@ -1,18 +1,24 @@
 const getLocationList = async (url) => {
-    if(!url){
-        throw new Error("page does not exist");
-    }
-    const response = await fetch(url);
-    const data = await response.json();
-    
-    data.results.forEach((location)=> {
-        console.log(location.name);
-    })
-    return {
-    next:data.next,
+  if (!url) {
+    throw new Error("There is no more page in this direction.");
+  }
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error("Could not get location list.");
+  }
+
+  const data = await response.json();
+
+  data.results.forEach((location) => {
+    console.log(location.name);
+  });
+
+  return {
+    next: data.next,
     previous: data.previous,
-    };
-  
+  };
 };
 
 const getLocation = async (nameOrId) => {
@@ -24,6 +30,10 @@ const getLocation = async (nameOrId) => {
     `https://pokeapi.co/api/v2/location/${nameOrId}`,
   );
 
+  if(!response.ok){
+    throw new Error(`Location "${nameOrId}" was not found`);
+  }
+  
   const data = await response.json();
 
   console.log("Name:", data.name);

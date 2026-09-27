@@ -1,6 +1,6 @@
 const readLine = require("node:readline");
 const{stdin, stdout} = require("node:process");
-const commandManager = require("./command-maanager.js");
+const commandManager = require("./command-manager.js");
 const terminal = readLine.createInterface({
     input:stdin,
     output:stdout,

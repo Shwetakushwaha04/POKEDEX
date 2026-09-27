@@ -4,9 +4,9 @@ const callingParams = {
   url: "https://pokeapi.co/api/v2/location",
 };
 
-const locationCommandManager = async (arg) => {
+const locationCommandManager = async (args) => {
   try {
-    const [subCommand = "list", ...params] = arg;
+    const [subCommand = "list", ...params] = args;
 
     switch (subCommand) {
       case "list": {
@@ -35,24 +35,25 @@ const locationCommandManager = async (arg) => {
         break;
       }
 
-      case "-s": {
+      case "-s":
         await getLocation(params[0]);
         break;
-      }
 
-      case "--help": {
-        console.log("location list");
-        console.log("location -n");
-        console.log("location -p");
-        console.log("location -s <name|id>");
+      case "--help":
+        console.log("\nLocation commands:");
+        console.log("  location list         Show the first page of locations");
+        console.log("  location -n           Show the next page");
+        console.log("  location -p           Show the previous page");
+        console.log("  location -s <name|id> Show a location's details\n");
         break;
-      }
 
       default:
-        console.log("Invalid location command");
+        console.log(
+          `Invalid location command "${subCommand}". Try "location --help".`,
+        );
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(`Error: ${error.message}`);
   }
 };
 
